@@ -3,21 +3,43 @@ from pydantic import BaseModel
 import joblib
 import json
 import pandas as pd
+import requests
+import os
 
 # Crear la app FastAPI
 app = FastAPI()
 
+# URLs de descarga directa desde Google Drive
 MODEL_URL = "https://drive.google.com/uc?export=download&id=1eLWS_EmFjMgp1zkqz6Xg3U3X0JBcH-P4"
-metricas_path = "model_metrics.json"
 COLUMNS_URL = "https://drive.google.com/uc?export=download&id=1j6m_u1-rBTIjuXNU0BVNpTzd1IQQJk6z"
+METRICAS_FILE = "model_metrics.json"
 
-# Cargar modelo y recursos
-modelo = joblib.load(MODEL_URL)
+# Archivos locales
+MODEL_FILE = "modelos.pkl"
+COLUMNS_FILE = "model_columns.pkl"
 
-with open(metricas_path, "r", encoding="utf-8") as f:
+# Función para descargar si no existe
+def download_file(url: str, filename: str):
+    if not os.path.exists(filename):
+        print(f"Descargando {filename} desde {url} ...")
+        r = requests.get(url)
+        r.raise_for_status()
+        with open(filename, "wb") as f:
+            f.write(r.content)
+        print(f"{filename} descargado correctamente.")
+    else:
+        print(f"{filename} ya existe, no se descarga.")
+
+# Descargar los modelos antes de cargarlos
+download_file(MODEL_URL, MODEL_FILE)
+download_file(COLUMNS_URL, COLUMNS_FILE)
+
+# Cargar modelo y recursos locales
+modelo = joblib.load(MODEL_FILE)
+model_columns = joblib.load(COLUMNS_FILE)
+
+with open(METRICAS_FILE, "r", encoding="utf-8") as f:
     metricas = json.load(f)
-
-model_columns = joblib.load(COLUMNS_URL)
 
 # Definir esquema para entrada
 class InputData(BaseModel):
