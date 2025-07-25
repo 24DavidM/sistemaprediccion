@@ -8,4 +8,5 @@ fastapi
 uvicorn
 pydantic
 joblib
-gdown 
+gdown
+scikit-learn
