@@ -5,27 +5,25 @@ import json
 import pandas as pd
 import requests
 import os
+import gdown
 
 # Crear la app FastAPI
 app = FastAPI()
 
 # URLs de descarga directa desde Google Drive
-MODEL_URL = "https://drive.google.com/uc?export=download&id=1lk4ZTUQUho-atF4cBI8elEg-s73_OAz-"
-COLUMNS_URL = "https://drive.google.com/uc?export=download&id=1j6m_u1-rBTIjuXNU0BVNpTzd1IQQJk6z"
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1T2MsernqFCNKmfpGmb2cTyn1w6zKRK_2"
+COLUMNS_URL = "https://drive.google.com/uc?export=download&id=1o3DWpvV89wA7oPp0PzOy8iWoFsyXqw_o"
 METRICAS_FILE = "model_metrics.json"
 
 # Archivos locales
 MODEL_FILE = "modelos.pkl"
 COLUMNS_FILE = "model_columns.pkl"
 
-# Función para descargar si no existe
+# Función para descargar usando gdown (mejor manejo para Drive)
 def download_file(url: str, filename: str):
     if not os.path.exists(filename):
         print(f"Descargando {filename} desde {url} ...")
-        r = requests.get(url)
-        r.raise_for_status()
-        with open(filename, "wb") as f:
-            f.write(r.content)
+        gdown.download(url, filename, quiet=False)
         print(f"{filename} descargado correctamente.")
     else:
         print(f"{filename} ya existe, no se descarga.")
@@ -76,12 +74,9 @@ def predecir(data: InputData):
         df = pd.DataFrame([d])
 
         df_encoded = pd.get_dummies(df)
-
-        # Reindexar columnas para igualar las usadas en el modelo
         df_encoded = df_encoded.reindex(columns=model_columns, fill_value=0)
 
         proba = modelo.predict_proba(df_encoded)[0][1]
-
         umbral = 0.3
         pred = int(proba >= umbral)
 
@@ -90,7 +85,6 @@ def predecir(data: InputData):
             "Probability": round(proba, 4),
             "Threshold": umbral
         }
-
     except Exception as e:
         return {"error": str(e)}
 
