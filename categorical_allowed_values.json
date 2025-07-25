@@ -1,0 +1,34 @@
+{
+    "Smoking_Status": [
+        "Current",
+        "Former",
+        "Never"
+    ],
+    "Physical_Activity_Level": [
+        "High",
+        "Low",
+        "Moderate"
+    ],
+    "Family_History": [
+        "No",
+        "Yes"
+    ],
+    "Diabetes": [
+        "No",
+        "Yes"
+    ],
+    "Gender": [
+        "Female",
+        "Male"
+    ],
+    "Education_Level": [
+        "Primary",
+        "Secondary",
+        "Tertiary"
+    ],
+    "Employment_Status": [
+        "Employed",
+        "Retired",
+        "Unemployed"
+    ]
+}
