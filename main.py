@@ -1,24 +1,23 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
-import os
 import json
 import pandas as pd
 
 # Crear la app FastAPI
 app = FastAPI()
 
-model_path = "modelos.pkl"
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1eLWS_EmFjMgp1zkqz6Xg3U3X0JBcH-P4"
 metricas_path = "model_metrics.json"
-columns_path = "model_columns.pkl"
+COLUMNS_URL = "https://drive.google.com/uc?export=download&id=1j6m_u1-rBTIjuXNU0BVNpTzd1IQQJk6z"
 
 # Cargar modelo y recursos
-modelo = joblib.load(model_path)
+modelo = joblib.load(MODEL_URL)
 
 with open(metricas_path, "r", encoding="utf-8") as f:
     metricas = json.load(f)
 
-model_columns = joblib.load(columns_path)
+model_columns = joblib.load(COLUMNS_URL)
 
 # Definir esquema para entrada
 class InputData(BaseModel):
