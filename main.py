@@ -10,7 +10,7 @@ import os
 app = FastAPI()
 
 # URLs de descarga directa desde Google Drive
-MODEL_URL = "https://drive.google.com/uc?export=download&id=1eLWS_EmFjMgp1zkqz6Xg3U3X0JBcH-P4"
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1lk4ZTUQUho-atF4cBI8elEg-s73_OAz-"
 COLUMNS_URL = "https://drive.google.com/uc?export=download&id=1j6m_u1-rBTIjuXNU0BVNpTzd1IQQJk6z"
 METRICAS_FILE = "model_metrics.json"
 
